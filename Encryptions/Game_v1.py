@@ -1,12 +1,7 @@
 import tkinter as tk
-from operator import truediv
-from pickle import GLOBAL
-from tkinter import ttk
-from tkinter import messagebox
 import nltk # needs pip install
 import time
-import Game_over
-from Encryptions import Game_instructions as instructions
+from Encryptions import Game_instructions as instructions, Game_over
 from Encryptions import Ceaser_Cypher as Ceaser
 from Encryptions import Zigzag as Zigzag
 from Encryptions import Vigenere_cipher as Vigenere
