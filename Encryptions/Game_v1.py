@@ -5,6 +5,7 @@ from tkinter import ttk
 from tkinter import messagebox
 import nltk # needs pip install
 import time
+import Game_over
 from Encryptions import Game_instructions as instructions
 from Encryptions import Ceaser_Cypher as Ceaser
 from Encryptions import Zigzag as Zigzag
@@ -170,19 +171,22 @@ def launch_game():
 
 
     def Timer():
-        display_time = (120  + start - time.perf_counter())
+        display_time = (5  + start - time.perf_counter())
         new_time = Configure_time(display_time)
         time_label = tk.Label(game_window, text=f"{new_time}", font = ("Courier", 20, "bold"), fg="lightblue")
         time_label.place(x = 50, y = 50, anchor = "center")
         time_label.config(text = f"{display_time:.1f}")
         game_window.after(10, Timer)
-        print(f"start{start}, time.perf: {time.perf_counter()}")
+        #print(f"start{start}, time.perf: {time.perf_counter()}")
         #print(display_time)
 
         if display_time <= 0:
             game_window.destroy()
-        return
+            Game_over.Game_over(score= score, On_begin=launch_game)
+
+            return
     Timer()
+
 
 
     def load_question():
