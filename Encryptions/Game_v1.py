@@ -164,15 +164,25 @@ def launch_game():
 
     start = time.perf_counter()
 
+    def Configure_time(display_time):
+        new_time = f"{display_time / 60}: {display_time % 60}"
+        return new_time
+
+
     def Timer():
-        display_time = (120 - time.perf_counter()/1000 - start/1000)
-        time_label = tk.Label(game_window, text=f"{display_time:.1f}", font = ("Courier", 20, "bold"), fg="lightblue")
-        time_label.place(x = 20, y = 20, anchor = "center")
+        display_time = (120  + start - time.perf_counter())
+        new_time = Configure_time(display_time)
+        time_label = tk.Label(game_window, text=f"{new_time}", font = ("Courier", 20, "bold"), fg="lightblue")
+        time_label.place(x = 50, y = 50, anchor = "center")
         time_label.config(text = f"{display_time:.1f}")
-        print(display_time)
+        game_window.after(10, Timer)
+        print(f"start{start}, time.perf: {time.perf_counter()}")
+        #print(display_time)
+
+        if display_time <= 0:
+            game_window.destroy()
         return
 
-    game_window.after(10, Timer)
 
     Timer()
 
