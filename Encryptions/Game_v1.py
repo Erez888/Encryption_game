@@ -163,7 +163,18 @@ def launch_game():
     correct_option_holder = [None]
 
     start = time.perf_counter()
-    display_time = (120 - start)
+
+    def Timer():
+        display_time = (120 - time.perf_counter()/1000 - start/1000)
+        time_label = tk.Label(game_window, text=f"{display_time:.1f}", font = ("Courier", 20, "bold"), fg="lightblue")
+        time_label.place(x = 20, y = 20, anchor = "center")
+        time_label.config(text = f"{display_time:.1f}")
+        print(display_time)
+        return
+
+    game_window.after(10, Timer)
+
+    Timer()
 
 
     def load_question():
