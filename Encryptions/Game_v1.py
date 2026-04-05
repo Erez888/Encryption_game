@@ -182,8 +182,6 @@ def launch_game():
         if display_time <= 0:
             game_window.destroy()
         return
-
-
     Timer()
 
 
