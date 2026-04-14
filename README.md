@@ -1,1 +1,1 @@
-30$ Encryption project by Erez Davidi and Yoav Yoktan
+30$ Encryption project
