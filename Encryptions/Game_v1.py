@@ -161,15 +161,16 @@ def launch_game():
     start = time.perf_counter()
 
     def Configure_time(display_time):
-        new_time = f"{display_time / 60}: {display_time % 60}"
-        return new_time
+        minutes = int(display_time) // 60
+        seconds = int(display_time) % 60
+        return f"{minutes:02d}:{seconds:02d}"  #02d -  ensures numbers always show as two digits
 
-
+    time_label = tk.Label(game_window, text="", font=("Courier", 20, "bold"), fg="lightblue")
+    time_label.place(x=50, y=50, anchor="center")
     def Timer():
-        display_time = (5  + start - time.perf_counter())
+        display_time = (120  + start - time.perf_counter())
         new_time = Configure_time(display_time)
-        time_label = tk.Label(game_window, text=f"{new_time}", font = ("Courier", 20, "bold"), fg="lightblue")
-        time_label.place(x = 50, y = 50, anchor = "center")
+
         time_label.config(text = f"{display_time:.1f}")
         game_window.after(10, Timer)
         #print(f"start{start}, time.perf: {time.perf_counter()}")
@@ -209,7 +210,7 @@ def launch_game():
             option4.config(text=options[3], value=options[3], state = "normal")
             selected.set(None)
             result_label.config(text="")
-        elif question_num >1:
+        elif question_num >=1:
             result_label.config(text="You need to submit an answer first!", anchor="center", fg = "yellow", wraplength= 400)
             #print("blocked")
 
