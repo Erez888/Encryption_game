@@ -91,16 +91,28 @@ def send_error(conn, error_msg):
 
 def handle_getscore_message(conn, username):
     global file
-    def handle_getscore_message(conn, username):
-        global users_dict
-        if username in users_dict:
-            score = users_dict[username][1]
-            build_and_send_message(conn, chatlib.PROTOCOL_SERVER['your_score_msg'], str(score))
-        else:
-            send_error(conn, "User not found")
+    global users_dict
+    if username in users_dict:
+        score = users_dict[username][1]
+        build_and_send_message(conn, chatlib.PROTOCOL_SERVER['score_msg'], str(score))
+    else:
+        send_error(conn, "User not found")
 
-# Implement this in later chapters
-
+def handle_highscore_message(conn):
+    global file
+    global users_dict
+    scores = {}
+    print(scores)
+    for item in users_dict:
+        score = int((users_dict[item])[1])
+        scores[item] = score
+    sort_scores = dict(sorted(scores.items(), key=lambda item: item[1], reverse=True))
+    print(sort_scores)
+    msg = ""
+    for i, (name, score) in enumerate(sort_scores.items(), 1):
+        msg += f"{i}. {name} - {score}\n"
+    print(msg)
+    build_and_send_message(conn,chatlib.PROTOCOL_SERVER['highscore_msg'],msg)
 
 def handle_logout_message(conn,client_sockets):
 
@@ -120,8 +132,9 @@ def handle_login_message(conn, data):
     global users_dict  # This is needed to access the same users dictionary from all functions
     global logged_users	 # To be used later
     users = load_user_database()
-    details = data.split('#')
-    username, password = details[0], details[1]
+    msg,num,details = data.split("|")
+    username, password = details.split("#")
+    print("the username and password is"+username,password)
     if username in users:
         print('username in users')
         print((users_dict[username])[0])
@@ -138,9 +151,9 @@ def handle_login_message(conn, data):
 def handle_register_message(conn, data):
     global users_dict  # This is needed to access the same users dictionary from all functions
     global logged_users	 # To be used later
-    users_dict = load_user_database()
-    details = data.split('#')
-    username, password = details[0], details[1]
+    users = load_user_database()
+    msg,num,details = data.split("|")
+    username, password = details.split("#")
     if username not in users_dict:
         print('registration approved')
         add_users(username,password)
@@ -155,8 +168,10 @@ def handle_register_message(conn, data):
 def handle_client_message(conn, cmd, data):
     print("handling messages")
     if cmd == chatlib.PROTOCOL_CLIENT['login_msg']:
+        print("you chose to login")
         handle_login_message(conn,data)
     elif cmd == chatlib.PROTOCOL_CLIENT['register_msg']:
+        print("you chose to register")
         handle_register_message(conn,data)
     else:
         send_error(conn,'unknown command')
@@ -197,12 +212,16 @@ def main():
                     elif cmd == chatlib.PROTOCOL_CLIENT['get_score_msg']:
                         if current_socket in logged_users:
                             username = logged_users[current_socket]
+                            print(username)
                             handle_getscore_message(current_socket, username)
                         else:
                             send_error(current_socket, "You must be logged in to get a score.")
+                    elif cmd == chatlib.PROTOCOL_CLIENT['get_highscore_msg']:
+                        print("getting highscore")
+                        handle_highscore_message(current_socket)
                     else:
                         print("logging in or registering")
-                        handle_client_message(conn,cmd,data)
+                        handle_client_message(current_socket,cmd,data)
                 except (ConnectionResetError, ConnectionAbortedError):
                     print("⚠️ Client connection aborted")
                     client_sockets.remove(current_socket)

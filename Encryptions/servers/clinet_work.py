@@ -47,6 +47,7 @@ def login(conn):
             data = chatlib.join_data([username, password])
             build_and_send_message(conn, chatlib.PROTOCOL_CLIENT['login_msg'], data)
             cmd, msg = recv_message_and_parse(conn)
+            print(username,password)
             if cmd == chatlib.PROTOCOL_SERVER["login_ok_msg"]:
                 print("Login successful!")
                 return
@@ -96,7 +97,7 @@ def get_score(conn):
 def get_highscore(conn):
     msg_code, data = build_send_recv_parse(conn, chatlib.PROTOCOL_CLIENT["get_highscore_msg"], "")
     if msg_code == chatlib.PROTOCOL_SERVER["highscore_msg"]:
-        print('High-Score table:', data)
+        print('High-Score table:\n', data)
     else:
         print("Error: unexpected server response:", msg_code, data)
 
@@ -112,7 +113,7 @@ def main():
     login(conn)
     code = ''
     while code.upper() != 'LOGOUT':
-        code = input("what do you want to do:\nQuit=q\nGet my score=s\nGet high score=h\nPlay a trivia question=p\nGet logged users=l\n")
+        code = input("what do you want to do:\nQuit=q\nGet my score=s\nGet high score=h\n")
         if code.lower() == "s":
             get_score(conn)
         elif code.lower() == 'h':
