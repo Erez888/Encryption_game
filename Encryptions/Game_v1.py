@@ -6,13 +6,26 @@ from Encryptions import Ceaser_Cypher as Ceaser
 from Encryptions import Zigzag as Zigzag
 from Encryptions import Vigenere_cipher as Vigenere
 from Encryptions import AZBY
-
-
-
 nltk.download('words')
 from nltk.corpus import words
 import random
 import string
+
+BG      = "#0d0d0f"
+CARD    = "#16161a"
+ACCENT  = "#7f5af0"
+ACCENT2 = "#2cb67d"
+TEXT    = "#fffffe"
+SUBTEXT = "#94a1b2"
+ERR     = "#ff6b6b"
+WARN    = "#f4a261"
+BORDER  = "#2e2e38"
+
+FONT_TITLE = ("Georgia", 28, "bold")
+FONT_LABEL = ("Georgia", 11)
+FONT_ENTRY = ("Courier New", 12)
+FONT_BTN   = ("Georgia", 12, "bold")
+FONT_SMALL = ("Georgia", 9)
 
 def choose_cypher():
     cyphers = ["Ceaser", "Zigzag", "Vigenere", "AZBY"]
@@ -129,31 +142,36 @@ def launch_game():
     game_window = tk.Toplevel()
     game_window.geometry("800x700")
     game_window.title("Game")
+    game_window.configure(bg = BG)
     submitted = False
     score = 0
     question_num = 0 #0 because the first instance of load question increases it
 
-    score_lbl = tk.Label(game_window, text=f"score: {score}", font=("Courier", 20, "bold"), fg="lightblue")
+    score_lbl = tk.Label(game_window, text=f"score: {score}", font=("Georgia", 16, "bold"), bg=BG, fg=ACCENT2)
     score_lbl.place(x=70, y=20, anchor="center")
 
-    question_num_lbl = tk.Label(game_window, text= f"Question Number {question_num}", font=("Courier", 20, "bold"), fg="lightblue")
+    question_num_lbl = tk.Label(game_window, text= f"Question Number {question_num}", font=("Georgia", 16, "bold") ,bg=BG, fg=SUBTEXT)
     question_num_lbl.place(x = 650, y = 20, anchor="center")
 
-    question_label = tk.Label(game_window, text="", font=("Courier", 20, "bold"), wraplength=600)
+    question_label = tk.Label(game_window, text="", font=("Courier", 20, "bold"), wraplength=600, bg=BG, fg=TEXT)
     question_label.place(x=400, y=120, anchor="center")
 
     selected = tk.StringVar()
     radio_font = ("Courier", 18, "bold")
-    option1 = tk.Radiobutton(game_window, text="", variable=selected, value="", font=radio_font, width = 20, anchor= "w")
-    option2 = tk.Radiobutton(game_window, text="", variable=selected, value="", font=radio_font, width = 20, anchor= "w")
-    option3 = tk.Radiobutton(game_window, text="", variable=selected, value="", font=radio_font, width = 20, anchor= "w")
-    option4 = tk.Radiobutton(game_window, text="", variable=selected, value="", font=radio_font, width = 20, anchor= "w")
+    option1 = tk.Radiobutton(game_window, text="", variable=selected, value="", font=FONT_ENTRY, width = 20, anchor= "w", bg=BG, fg=TEXT,
+    selectcolor=CARD, activebackground=BG, activeforeground=ACCENT)
+    option2 = tk.Radiobutton(game_window, text="", variable=selected, value="", font=FONT_ENTRY, width = 20, anchor= "w", bg=BG, fg=TEXT,
+    selectcolor=CARD, activebackground=BG, activeforeground=ACCENT)
+    option3 = tk.Radiobutton(game_window, text="", variable=selected, value="", font=FONT_ENTRY, width = 20, anchor= "w", bg=BG, fg=TEXT,
+    selectcolor=CARD, activebackground=BG, activeforeground=ACCENT)
+    option4 = tk.Radiobutton(game_window, text="", variable=selected, value="", font=FONT_ENTRY, width = 20, anchor= "w", bg=BG, fg=TEXT,
+    selectcolor=CARD, activebackground=BG, activeforeground=ACCENT)
     option1.place(x=400, y=280, anchor="center")
     option2.place(x=400, y=320, anchor="center")
     option3.place(x=400, y=360, anchor="center")
     option4.place(x=400, y=400, anchor="center")
 
-    result_label = tk.Label(game_window, text="", font=("Courier", 20, "bold"))
+    result_label = tk.Label(game_window, text="", font=FONT_ENTRY)
     result_label.place(x=400, y=560, anchor="center")
 
     correct_option_holder = [None]
@@ -165,10 +183,12 @@ def launch_game():
         seconds = int(display_time) % 60
         return f"{minutes:02d}:{seconds:02d}"  #02d -  ensures numbers always show as two digits
 
-    time_label = tk.Label(game_window, text="", font=("Courier", 20, "bold"), fg="lightblue")
+    time_label = tk.Label(game_window, text="", font=("Georgia", 16, "bold") , bg=BG, fg=WARN)
     time_label.place(x=50, y=50, anchor="center")
     def Timer():
-        display_time = (120  + start - time.perf_counter())
+        normal_time = 120
+        debug_time = 5
+        display_time = (debug_time  + start - time.perf_counter())
         new_time = Configure_time(display_time)
 
         time_label.config(text = f"{display_time:.1f}")
@@ -209,9 +229,9 @@ def launch_game():
             option3.config(text=options[2], value=options[2], state = "normal")
             option4.config(text=options[3], value=options[3], state = "normal")
             selected.set(None)
-            result_label.config(text="")
+            result_label.config(text="", bg=BG)
         elif question_num >=1:
-            result_label.config(text="You need to submit an answer first!", anchor="center", fg = "yellow", wraplength= 400)
+            result_label.config(text="You need to submit an answer first!", anchor="center", fg = "yellow", wraplength= 400, font= FONT_SMALL)
             #print("blocked")
 
     def on_submit():
@@ -223,16 +243,18 @@ def launch_game():
         option4.config(state="disabled")
         submit_btn.config(state="disabled")
         if Check_ans(selected.get(), correct_option_holder[0]):
-            result_label.config(text="Correct!", fg="green")
+            result_label.config(text="Correct!", fg="green", font= FONT_ENTRY)
             score += 1
             score_lbl.config(text=f"score: {score}")
         else:
-            result_label.config(text=f"Wrong!\nCorrect Answer: {correct_option_holder[0]}", fg="red", wraplength=600)
+            result_label.config(text=f"Wrong!\nCorrect Answer: {correct_option_holder[0]}", fg="red", wraplength=600, font= FONT_ENTRY)
 
-    submit_btn = tk.Button(game_window, text="Submit", font=("Courier", 20, "bold"), width=8, height=2, command=on_submit)
+    submit_btn = tk.Button(game_window, text="Submit", font=FONT_BTN, width=8, height=2, command=on_submit, bg=ACCENT, fg=TEXT,
+    activebackground=ACCENT, activeforeground=TEXT, relief="flat", bd=0)
     submit_btn.place(x=300, y=480, anchor="center")
 
-    next_question_btn = tk.Button(game_window, text="Next Question", font=("Courier", 20, "bold"), command=load_question)
+    next_question_btn = tk.Button(game_window, text="Next Question", font=FONT_BTN, command=load_question, bg=ACCENT2, fg=TEXT,
+    activebackground=ACCENT2, activeforeground=TEXT, relief="flat", bd=0)
     next_question_btn.place(x=670, y=650, anchor="center")
 
     load_question()

@@ -1,4 +1,6 @@
 def encrypt(message, key):
+    message = message.lower()
+    key = key.lower()
     new_message = ""
     for pair in enumerate(message):
         index = pair[0]
@@ -12,11 +14,13 @@ def encrypt(message, key):
 
 def decrypt(message, key):
     new_message = ""
+    message = message.lower()
+    key = key.lower()
     for pair in enumerate(message):
         index = pair[0]
         char = pair[1]
         index %= len(key)
-        new_char = ((ord(char) +-97) - (ord(key[index])-97)) % 26
+        new_char = ((ord(char) -97) - (ord(key[index])-97)) % 26
         new_char += 97
         new_char = chr(new_char)
         new_message+= new_char
