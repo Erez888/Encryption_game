@@ -6,7 +6,7 @@ import client_work
 class CryptoApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Encryption Tool")
+        self.root.title("login page")
         self.root.geometry("500x600")
         self.conn = None  # will hold the socket after connect
 
