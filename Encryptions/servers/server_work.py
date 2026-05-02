@@ -114,6 +114,13 @@ def handle_highscore_message(conn):
     print(msg)
     build_and_send_message(conn,chatlib.PROTOCOL_SERVER['highscore_msg'],msg)
 
+def add_score(conn,username):
+    global file
+    global users_dict
+    score = int(users_dict[username][1])
+    new_score = score + 1
+    users_dict[username][1] = new_score
+
 def handle_logout_message(conn,client_sockets):
 
     global logged_users
