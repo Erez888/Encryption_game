@@ -6,6 +6,7 @@ from Encryptions import Ceaser_Cypher as Ceaser
 from Encryptions import Zigzag as Zigzag
 from Encryptions import Vigenere_cipher as Vigenere
 from Encryptions import AZBY
+from Encryptions import gui_yoav
 nltk.download('words')
 from nltk.corpus import words
 import random
@@ -188,7 +189,7 @@ def launch_game():
     def Timer():
         normal_time = 120
         debug_time = 5
-        display_time = (debug_time  + start - time.perf_counter())
+        display_time = (normal_time  + start - time.perf_counter())
         new_time = Configure_time(display_time)
 
         time_label.config(text = f"{display_time:.1f}")
@@ -260,4 +261,7 @@ def launch_game():
     load_question()
 
 
-instructions.menu(on_begin=launch_game)
+#instructions.menu(on_begin=launch_game)
+
+if __name__ == "__main__":
+    gui_yoav.gui_main(on_begin = launch_game)
