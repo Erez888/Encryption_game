@@ -1,7 +1,5 @@
-#p_text = input("enter a string to decrypt: ")
 def CeaserCyhper(p_text, key):
     p_text = p_text.lower()
-    #key = int(input("enter wanted encryption offset: "))
     alphabet = "abcdefghijklmnopqrstuvwxyz"
     encrypted_text = ""
     for char in p_text:
@@ -14,6 +12,3 @@ def CeaserCyhper(p_text, key):
             encrypted_text += char
     return encrypted_text
 
-#p_text = "I need more practice"
-#key = 13
-#print(CeaserCyhper(p_text, key))
