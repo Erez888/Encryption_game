@@ -1,5 +1,4 @@
 def AZBY(p_text):
-    #p_text = input("Text for encryption: ")
     #p_text = p_text.replace(" ", "")
     p_text = p_text.lower()
     start = "abcdefghijklmnopqrstuvwxyz"
@@ -13,4 +12,6 @@ def AZBY(p_text):
         else:
             text = text + item
     return text
-AZBY("Text")
+
+if __name__ == "__main__":
+    AZBY("Text")
