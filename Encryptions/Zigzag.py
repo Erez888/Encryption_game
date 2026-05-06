@@ -56,18 +56,9 @@ def zigzagb_dec(text):
 
 # encryption with variable depth:
 def encrypt(text, depth):
-    """Encrypts a text using the Zig-Zag algorithm.
 
-    Args:
-        text: The plaintext to be encrypted.
-        depth: The depth of the zigzag pattern.
+    # if required depth is smaller than 1 ( minus value is invalid),returns the initial value without change
 
-
-    Returns:
-        The encrypted ciphertext.
-    """
-    # if required depth is smaller than 1 ( minus value is in valid)
-    # return the initial value without change
     if depth <= 1:
         return text
 
@@ -75,35 +66,22 @@ def encrypt(text, depth):
     direction = 1
     row = 0
 
-    # create a list of empty lists initialized
     zigzag = [[] for _ in range(depth)]
 
-    # fill in the message in zigzag list structure according to logic
     for char in text:
         zigzag[row].append(char)
         row += direction
         if row == 0 or row == depth - 1:
             direction *= -1
 
-    # join all the list depth into 1 string
     for row in zigzag:
         ciphertext += "".join(row)
 
     return ciphertext
 
-#Decription with variable depth
 def decrypt(ciphertext, depth):
-    """Decrypts a text encrypted using the Zig-Zag algorithm.
 
-       Args:
-           ciphertext: The encrypted text.
-           depth: The depth of the zig-zag pattern.
-
-       Returns:
-           The decrypted plaintext.
-    """
-    # if required depth is smaller than 1 ( minus value is in valid)
-    # return the initial value without change
+    # if required depth is smaller than 1 ( minus value is invalid),returns the initial value without change
     if depth <= 1:
         return ciphertext
 
@@ -111,7 +89,6 @@ def decrypt(ciphertext, depth):
     zigzag = [[] for _ in range(depth)]
     pattern = [0] * n
 
-    # Determine the zig-zag pattern
     row, direction = 0, 1
     for i in range(n):
         pattern[i] = row
@@ -119,7 +96,6 @@ def decrypt(ciphertext, depth):
         if row == 0 or row == depth - 1:
             direction *= -1
 
-    # Fill the zig-zag rows with characters from the ciphertext
     index = 0
     for r in range(depth):
         for i in range(n):
@@ -127,7 +103,6 @@ def decrypt(ciphertext, depth):
                 zigzag[r].append(ciphertext[index])
                 index += 1
 
-    # Reconstruct the plaintext
     plaintext = ""
     row, direction = 0, 1
     for i in range(n):
