@@ -27,6 +27,7 @@ logged_in = False
 def gui_main(on_begin=None):
     global logged_in
 
+
     conn = None
 
     def write_output(text):
@@ -175,7 +176,16 @@ def gui_main(on_begin=None):
     def on_press():
         if logged_in:
             root.withdraw()
-            Game_instructions.menu(on_begin=on_begin)
+            username = username_entry.get().strip()
+
+            def start_game():
+                on_begin(username=username, on_back=back_to_login)
+            def back_to_login():
+                root.deiconify()
+
+
+
+            Game_instructions.menu(on_begin=start_game, on_back=back_to_login)
         else:
             write_output("Please log in first.")
 

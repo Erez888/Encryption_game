@@ -7,6 +7,7 @@ from Encryptions import Zigzag as Zigzag
 from Encryptions import Vigenere_cipher as Vigenere
 from Encryptions import AZBY
 from Encryptions import gui_yoav
+from server_work import change_score
 nltk.download('words')
 from nltk.corpus import words
 import random
@@ -139,7 +140,7 @@ def Check_ans(selected_answer, correct_answer):
 
 
 
-def launch_game():
+def launch_game(username=None, on_back = None):
     game_window = tk.Toplevel()
     game_window.geometry("800x700")
     game_window.title("Game")
@@ -189,7 +190,7 @@ def launch_game():
     def Timer():
         normal_time = 120
         debug_time = 5
-        display_time = (normal_time  + start - time.perf_counter())
+        display_time = (debug_time  + start - time.perf_counter())
         new_time = Configure_time(display_time)
 
         time_label.config(text = f"{display_time:.1f}")
@@ -199,7 +200,8 @@ def launch_game():
 
         if display_time <= 0:
             game_window.destroy()
-            Game_over.Game_over(score= score, On_begin=launch_game)
+            change_score(username=username, new_score=score)
+            Game_over.Game_over(score=score, On_begin=launch_game, on_back=on_back, username=username)
 
             return
     Timer()

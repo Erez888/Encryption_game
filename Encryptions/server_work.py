@@ -184,8 +184,19 @@ def handle_client_message(conn, cmd, data):
         send_error(conn,'unknown command')
 
 
+def change_score(username, new_score):
+    with open('your_file.txt', 'r') as file:
+        lines = file.readlines()
 
-
+    with open('your_file.txt', 'w') as file:
+        for line in lines:
+            parts = line.strip().split(':')
+            if parts[0] == username:
+                password, score = parts[1].split(',')
+                if new_score > int(score):
+                    line = f"{username}:{password},{new_score}\n"
+            file.write(line)
+change_score(username="test", new_score=3)
 
 def main():
     # Initializes global users and questions dicionaries using load functions, will be used later

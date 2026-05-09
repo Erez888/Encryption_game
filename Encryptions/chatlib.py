@@ -111,6 +111,6 @@ users_dict = {}
 with open(r'your_file.txt', 'r') as file:
     for line in file:
         print(line)
-        key, value = line.strip().split(':')
+        key, value = line.strip().split(':', 1)
         users_dict[key.strip()] = value.strip()
 

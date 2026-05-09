@@ -18,11 +18,13 @@ FONT_ENTRY = ("Courier New", 12)
 FONT_BTN   = ("Georgia", 12, "bold")
 FONT_SMALL = ("Georgia", 9)
 
-def menu(on_begin=None):
-    menu_win = tk.Tk()
+def menu(on_begin=None, on_back = None):
+    menu_win = tk.Toplevel()
     menu_win.geometry("800x700")
     menu_win.title("Game - menu")
     menu_win.configure(bg=BG)
+    menu_win.lift()
+    menu_win.focus_force()
 
     tk.Frame(menu_win, bg=ACCENT, height=4).place(x=0, y=0, relwidth=1)
 
@@ -51,4 +53,14 @@ def menu(on_begin=None):
                              width=20, height=4, command=on_press)
     begin_button.place(x=300, y=400)
 
-    menu_win.mainloop()
+    def backto_menu():
+        menu_win.withdraw()
+        if on_back:
+            on_back()
+    menu_button = tk.Button(menu_win, text="Menu",
+                             font=("Georgia", 8, "bold"), bg=ACCENT, fg=TEXT,
+                             activebackground=ACCENT, activeforeground=TEXT,
+                             relief="flat", bd=0, cursor="hand2",
+                             width=20, height=4, command=backto_menu)
+    menu_button.place(x = 30, y = 620)
+
